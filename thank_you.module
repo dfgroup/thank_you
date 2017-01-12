@@ -59,10 +59,11 @@ function configuracion_thank_you(){
     '#default_value' => $titulo ,
   );
   $form['body']=array(
-    '#type'=>'textarea',
+    '#type'=>'text_format',
     '#title'=>t('Descripcion'),
     '#description'=>t('Escriba algún mensaje si fuese necesario <br> Etiqueta "br" para salto de línea'),
-     '#default_value' => $body ,
+    '#default_value' => $body,
+	'#format'=>'full_html',
   );
   $form['etiqueta_volver']=array(
     '#type'=>'textfield',
@@ -87,7 +88,7 @@ function configuracion_thank_you(){
 
 function configuracion_thank_you_submit($form, $form_state) {
    $titulo = $form_state['values']['titulo'];
-   $body = $form_state['values']['body'];
+   $body = $form_state['values']['body']['value'];
    $etiqueta_volver = $form_state['values']['etiqueta_volver'];
    $script = $form_state['values']['script'];
  

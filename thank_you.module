@@ -1,0 +1,144 @@
+<?php
+/**
+ * @file
+ * Module's main file.
+ */
+
+/**
+ * A custom form
+ */
+
+
+function thank_you_menu() {
+  $items = array();
+  
+
+ $items['gracias'] = array(
+    'page title' => t('Thank you'),
+    'page callback' => 'thank_you',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/structure/configuracion_thank_you'] = array( //this creates a URL that will call this form at "examples/form-example"
+    'title' => t('Thank you'), //page title
+    'description' => 'Configuración de Página Gracias',
+    'page callback' => 'drupal_get_form',
+    'page arguments'=>array('configuracion_thank_you'),
+    'access arguments' => array('thank you configuration'),
+    );
+
+ return $items;
+
+}
+
+function thank_you_permission() {
+  return array(
+    'thank you configuration' => array(
+      'title' => t('Thank you'),
+      'description' => t('Thank you page configuration'),
+    ),
+  );
+}
+
+
+
+
+function configuracion_thank_you(){
+
+   //$default = variable_get('envio_programado','');
+
+
+   $titulo = variable_get('thank_you_titulo','');
+   $body = variable_get('thank_you_body','');
+   $etiqueta_volver = variable_get('thank_you_etiqueta_volver','');
+   $script = variable_get('thank_you_script','');
+   $script2 = variable_get('thank_you_script2','');
+      
+    $form = array();
+
+     $form['titulo']=array(
+        '#type'=>'textfield',
+        '#title'=>t('Título'),
+        '#required'=>TRUE,
+        '#description'=>t('Título que llevará la página'),
+        '#default_value' => $titulo ,
+      );
+   
+    $form['body']=array(
+        '#type'=>'textarea',
+        '#title'=>t('Descripcion'),
+        '#description'=>t('Escriba algún mensaje si fuese necesario <br> Etiqueta "br" para salto de línea'),
+         '#default_value' => $body ,
+      );
+
+       $form['etiqueta_volver']=array(
+        '#type'=>'textfield',
+        '#title'=>t('Etiqueta del Boton'),
+        '#required'=>TRUE,
+        '#description'=>t('Nombre de la etiqueta Ejemplo:Volver'),
+        '#default_value' => $etiqueta_volver,
+      );
+   
+
+  
+     $form['script']=array(
+        '#type'=>'textarea',
+        '#title'=>t('Código JS'),
+        '#required'=>TRUE,
+        '#description'=>t('Campo de texto para isertar pixel'),
+        '#default_value' => $script,
+        
+      );
+
+       
+    
+    $form['submit']=array(
+        '#type'=>'submit',
+        '#value'=>t('Save')
+      );
+
+      return $form;
+
+
+}
+
+function configuracion_thank_you_submit($form, $form_state) {
+
+
+
+   $titulo = $form_state['values']['titulo'];
+   $body = $form_state['values']['body'];
+   $etiqueta_volver = $form_state['values']['etiqueta_volver'];
+   $script = $form_state['values']['script'];
+ 
+   
+   variable_set('thank_you_titulo',$titulo);
+   variable_set('thank_you_body',$body);
+   variable_set('thank_you_etiqueta_volver',$etiqueta_volver);
+   variable_set('thank_you_script',$script);
+ 
+}
+
+function  thank_you_theme() {
+
+ return array(   
+   'thank_you' => array(
+     'template' => 'thank_you',  
+     'variables' => array(
+        'data' => NULL,
+      ),
+        )
+   );
+
+}
+
+function thank_you(){
+  
+ $argumets = func_get_args();
+ return theme('thank_you',array('data'=>$argumets));
+
+}
+
+

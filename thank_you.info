@@ -1,0 +1,8 @@
+name = Thank you Page
+description = Thank you page for forms, handels convertion pixels
+dependencies[] = variable
+version = "7.x"
+core = "7.x"
+
+
+
